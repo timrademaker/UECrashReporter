@@ -23,10 +23,8 @@ namespace TimsCrashReporter
         private async void SendAndClose_Click(object sender, RoutedEventArgs e)
         {
             var ci = CrashInfo.GetCrashInfo(IncludeCrashLog.IsEnabled);
-            if(ci != null)
-            {
-                await Discord.SendToDiscord(ci, CrashDescription.Text);
-            }
+
+            await Discord.SendToDiscord(ci, CrashDescription.Text, s_AppName);
 
             Close();
         }

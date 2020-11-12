@@ -17,8 +17,6 @@ namespace TimsCrashReporter
             bool shouldStart = false;
             // True if the application was triggered by a crash (rather than an assert)
             bool triggeredByCrash = true;
-            // The name of the game that crashed
-            string appName = String.Empty;
 
             foreach(var arg in e.Args)
             {
@@ -26,20 +24,22 @@ namespace TimsCrashReporter
                 {
                     shouldStart = true;
                 }
-
-                if(arg.Contains("-Unattended"))
+                else if(arg.Contains("-Unattended"))
                 {
                     triggeredByCrash = false;
                 }
-
-                if(arg.Contains("-Appname="))
+                else if(arg.Contains("-AppName="))
                 {
-                    appName = arg.Replace("-Appname=UE4-", "");
-                    TimsCrashReporter.MainWindow.s_AppName = appName;
+                    TimsCrashReporter.MainWindow.s_AppName = arg.Replace("-AppName=UE4-", "");
+                    CrashInfo.s_AppName = arg.Replace("-AppName=UE4-", "");
+                }
+                else if(arg.Contains("/Saved/Crashes/"))
+                {
+                    CrashInfo.s_CrashReportLocation = arg;
                 }
             }
 
-            if(!shouldStart || !triggeredByCrash)
+            if (!shouldStart || !triggeredByCrash)
             {
                 Shutdown();
             }

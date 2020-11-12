@@ -12,26 +12,35 @@ namespace TimsCrashReporter
         public byte[] m_MiniDump = new byte[0];
 
 
-        static string s_AppName { get; set; }
+        public static string s_AppName { get; set; }
+        public static string s_CrashReportLocation { get; set; }
 
         public static CrashInfo GetCrashInfo(bool a_IncludeLog)
         {
             // Check if crash data can be found
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            path += "\\" + s_AppName + "\\Saved\\Crashes";
+            DirectoryInfo crashDir = new DirectoryInfo(s_CrashReportLocation);
+            crashDir.Refresh();
+            var dir = crashDir;
 
-            DirectoryInfo crashDir = new DirectoryInfo(path);
             if (!crashDir.Exists)
             {
-                return null;
+                string path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                path += "\\" + s_AppName + "\\Saved\\Crashes";
+                crashDir = new DirectoryInfo(path);
+                
+                if (!crashDir.Exists)
+                {
+                    return null;
+                }
+                else
+                {
+                    // Get the newest folder in the crash directory
+                    dir = crashDir.GetDirectories().OrderByDescending(d => d.LastWriteTimeUtc).First();
+                }
             }
 
             var info = new CrashInfo();
-
-            crashDir.Refresh();
-
-            // Get the newest folder in the crash directory
-            var dir = crashDir.GetDirectories().OrderByDescending(d => d.LastWriteTimeUtc).First();
+            
             dir.Refresh();
 
             FileInfo[] fileBuffer;

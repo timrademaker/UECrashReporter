@@ -12,26 +12,48 @@ namespace TimsCrashReporter
 
         private static readonly string s_MultipartBoundary = "SomeContentBoundary";
 
-        public static async Task SendToDiscord(CrashInfo a_CrashInfo, string a_CrashDescription)
+        public static async Task SendToDiscord(CrashInfo a_CrashInfo, string a_CrashDescription, string a_AppName = "")
         {
+            string filenamePrefix = a_AppName != string.Empty ? a_AppName + "-" : "";
+            string fileName = filenamePrefix + "Crash-" + DateTime.UtcNow.ToString("yyyy-MM-dd--HH-mm") + ".zip";
+
+            string embedStr = string.Empty;
+
+            if (a_CrashDescription != string.Empty)
+            {
+
+                embedStr = "{" +
+                    "\"embeds\": " +
+                        "[" +
+                            "{" +
+                                "\"title\": \"Crash Report\"," +
+                                "\"description\": \"" + a_CrashDescription + "\"," +
+                                "\"color\": \"16745472\"" +
+                            "}" +
+                        "]" +
+                    "}";
+            }
+
             try
             {
+                if(embedStr == string.Empty && a_CrashInfo == null)
+                {
+                    return;
+                }
+
                 var content = new MultipartFormDataContent(s_MultipartBoundary);
 
-                ByteArrayContent crashContent = new ByteArrayContent(a_CrashInfo.ZipCrashInfo());
-                string fileName = "Crash-" + DateTime.UtcNow.ToString("yyyy-MM-dd--HH-mm") + ".zip";
-                content.Add(crashContent, fileName, fileName);
-                
-                var embedStr = "{\"embeds\": " +
-                    "[" +
-                        "{" +
-                            "\"title\": \"Crash Report\"," +
-                            "\"description\": \"" + a_CrashDescription + "\"," +
-                            "\"color\": \"16745472\"" +
-                        "}" +
-                    "]" +
-                "}";
-                content.Add(new StringContent(embedStr), "payload_json");
+                if (a_CrashInfo != null)
+                {
+                    ByteArrayContent crashContent = new ByteArrayContent(a_CrashInfo.ZipCrashInfo());
+
+                    content.Add(crashContent, fileName, fileName);
+                }
+
+                if (embedStr != string.Empty)
+                {
+                    content.Add(new StringContent(embedStr), "payload_json");
+                }
 
                 await s_HttpClient.PostAsync(s_WebhookUrl, content);
             }
