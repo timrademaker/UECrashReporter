@@ -12,17 +12,22 @@ namespace TimsCrashReporter
         public byte[] m_MiniDump = new byte[0];
 
 
-        public static string s_AppName { get; set; }
-        public static string s_CrashReportLocation { get; set; }
+        public static string s_AppName { get; set; } = string.Empty;
+        public static string s_CrashReportLocation { get; set; } = string.Empty;
 
         public static CrashInfo GetCrashInfo(bool a_IncludeLog)
         {
             // Check if crash data can be found
-            DirectoryInfo crashDir = new DirectoryInfo(s_CrashReportLocation);
-            crashDir.Refresh();
+            DirectoryInfo crashDir = null;
+            if(s_CrashReportLocation != string.Empty)
+            {
+                crashDir = new DirectoryInfo(s_CrashReportLocation);
+                crashDir.Refresh();
+            }
+
             var dir = crashDir;
 
-            if (!crashDir.Exists)
+            if (crashDir != null && !crashDir.Exists)
             {
                 string path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
                 path += "\\" + s_AppName + "\\Saved\\Crashes";
@@ -70,9 +75,6 @@ namespace TimsCrashReporter
             {
                 FileInfo dumpFile = fileBuffer.First();
                 info.m_MiniDump = File.ReadAllBytes(dumpFile.FullName);
-                
-                // Compress dump
-                info.m_MiniDump = Compressor.Compress(info.m_MiniDump);
             }
 
             return info;
@@ -110,11 +112,12 @@ namespace TimsCrashReporter
                     {
                         var dumpFile = archive.CreateEntry("Crash.dmp");
 
-                        using (var streamWriter = new StreamWriter(dumpFile.Open()))
+                        using (var binaryWriter = new BinaryWriter(dumpFile.Open()))
                         {
-                            streamWriter.Write(m_MiniDump);
+                            binaryWriter.Write(m_MiniDump);
                         }
                     }
+
                 }
 
                 return memoryStream.ToArray();

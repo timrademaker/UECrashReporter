@@ -56,7 +56,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Compressor.cs" />
     <Compile Include="CrashInfo.cs" />
     <Compile Include="Discord.cs" />
     <Page Include="MainWindow.xaml">
