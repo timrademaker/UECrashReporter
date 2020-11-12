@@ -23,10 +23,10 @@
         <!-- Explanation of what happened -->
         <TextBlock x:Name="Explanation" Grid.Column="0" Grid.Row="0" Text="$GameName has encountered a critical error and could not recover.&#x0a;&#x0a;What were you doing when the game crashed? (Optional)" TextWrapping="Wrap"/>
         <!-- Text box for user description of what happened -->
-        <TextBox x:Name="CrashDescription" Grid.Column="0" Grid.Row="1"/>
+        <TextBox x:Name="CrashDescription" Grid.Column="0" Grid.Row="1" Background="White" MaxLength="2048"/>
 
         <!-- Log file checkbox -->
-        <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="True">
+        <CheckBox x:Name="IncludeCrashLog" Grid.Column="0" Grid.Row="2" IsChecked="True">
             <TextBlock Text="Include log files with submission. I understand that logs contain some personal information such as my system and user name." TextWrapping="Wrap"/>
         </CheckBox>
 

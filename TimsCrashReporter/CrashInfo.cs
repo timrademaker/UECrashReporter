@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Linq;
 using System.IO;
+using System.IO.Compression;
 
 namespace TimsCrashReporter
 {
     class CrashInfo
     {
-        public string m_LogContent = String.Empty;
-        public string m_XmlContent = String.Empty;
+        public string m_LogContent = string.Empty;
+        public string m_XmlContent = string.Empty;
         public byte[] m_MiniDump = new byte[0];
 
 
         static string s_AppName { get; set; }
 
-        public static CrashInfo GetCrashInfo()
+        public static CrashInfo GetCrashInfo(bool a_IncludeLog)
         {
             // Check if crash data can be found
             string path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -35,14 +36,16 @@ namespace TimsCrashReporter
 
             FileInfo[] fileBuffer;
 
-            // Get the log file
-            fileBuffer = dir.GetFiles("*.log");
-            if(fileBuffer.Length > 0)
+            if(a_IncludeLog)
             {
-                FileInfo logFile = fileBuffer.First();
-                info.m_LogContent = File.ReadAllText(logFile.FullName);
+                // Get the log file
+                fileBuffer = dir.GetFiles("*.log");
+                if (fileBuffer.Length > 0)
+                {
+                    FileInfo logFile = fileBuffer.First();
+                    info.m_LogContent = File.ReadAllText(logFile.FullName);
+                }
             }
-
 
             // Get the xml log file
             fileBuffer = dir.GetFiles("*.runtime-xml");
@@ -64,6 +67,49 @@ namespace TimsCrashReporter
             }
 
             return info;
+        }
+
+        public byte[] ZipCrashInfo()
+        {
+            using(var memoryStream = new MemoryStream())
+            {
+                using(var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+                {
+                    // Add log content
+                    if(m_LogContent != string.Empty)
+                    {
+                        var logFile = archive.CreateEntry("Crash.log");
+
+                        using (var streamWriter = new StreamWriter(logFile.Open()))
+                        {
+                            streamWriter.Write(m_LogContent);
+                        }
+                    }
+
+                    // Add xml content
+                    if (m_XmlContent != string.Empty)
+                    {
+                        var xmlFile = archive.CreateEntry("Crash.xml");
+
+                        using (var streamWriter = new StreamWriter(xmlFile.Open()))
+                        {
+                            streamWriter.Write(m_XmlContent);
+                        }
+                    }
+
+                    // Add minidump
+                    {
+                        var dumpFile = archive.CreateEntry("Crash.dmp");
+
+                        using (var streamWriter = new StreamWriter(dumpFile.Open()))
+                        {
+                            streamWriter.Write(m_MiniDump);
+                        }
+                    }
+                }
+
+                return memoryStream.ToArray();
+            }
         }
     }
 }
