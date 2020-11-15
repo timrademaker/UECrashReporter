@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace TimsCrashReporter
+namespace UECrashReporter
 {
     class Discord
     {

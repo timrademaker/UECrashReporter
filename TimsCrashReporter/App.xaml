@@ -1,7 +1,7 @@
-﻿<Application x:Class="TimsCrashReporter.App"
+﻿<Application x:Class="UECrashReporter.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:TimsCrashReporter"
+             xmlns:local="clr-namespace:UECrashReporter"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

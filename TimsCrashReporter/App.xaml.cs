@@ -2,7 +2,7 @@
 using System.Windows;
 
 
-namespace TimsCrashReporter
+namespace UECrashReporter
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -30,7 +30,7 @@ namespace TimsCrashReporter
                 }
                 else if(arg.Contains("-AppName="))
                 {
-                    TimsCrashReporter.MainWindow.s_AppName = arg.Replace("-AppName=UE4-", "");
+                    UECrashReporter.MainWindow.s_AppName = arg.Replace("-AppName=UE4-", "");
                     CrashInfo.s_AppName = arg.Replace("-AppName=UE4-", "");
                 }
                 else if(arg.Contains("/Saved/Crashes/"))

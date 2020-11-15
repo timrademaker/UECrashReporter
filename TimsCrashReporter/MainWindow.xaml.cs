@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace TimsCrashReporter
+namespace UECrashReporter
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -17,7 +17,7 @@ namespace TimsCrashReporter
             InitializeComponent();
 
             Explanation.Text = Explanation.Text.Replace(s_GameNameWildcard, s_AppName != string.Empty ? s_AppName : "The game");
-            Title= Title.Replace(s_GameNameWildcard, s_AppName != string.Empty ? s_AppName : "Tim's");
+            Title = Title.Replace(s_GameNameWildcard, s_AppName != string.Empty ? s_AppName : "Tim's");
         }
 
         private async void SendAndClose_Click(object sender, RoutedEventArgs e)

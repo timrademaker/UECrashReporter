@@ -3,7 +3,7 @@ using System.Linq;
 using System.IO;
 using System.IO.Compression;
 
-namespace TimsCrashReporter
+namespace UECrashReporter
 {
     class CrashInfo
     {
