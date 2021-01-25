@@ -59,5 +59,32 @@ namespace UECrashReporter.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string AppName {
+            get {
+                return ResourceManager.GetString("AppName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string CrashReportEmbedColor {
+            get {
+                return ResourceManager.GetString("CrashReportEmbedColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string DiscordWebhook {
+            get {
+                return ResourceManager.GetString("DiscordWebhook", resourceCulture);
+            }
+        }
     }
 }

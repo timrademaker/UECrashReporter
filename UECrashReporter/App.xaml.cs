@@ -30,8 +30,15 @@ namespace UECrashReporter
                 }
                 else if(arg.Contains("-AppName="))
                 {
-                    UECrashReporter.MainWindow.s_AppName = arg.Replace("-AppName=UE4-", "");
-                    CrashInfo.s_AppName = arg.Replace("-AppName=UE4-", "");
+                    if (UECrashReporter.MainWindow.s_AppName == string.Empty)
+                    {
+                        UECrashReporter.MainWindow.s_AppName = arg.Replace("-AppName=UE4-", "");
+                    }
+
+                    if (CrashInfo.s_AppName == string.Empty)
+                    {
+                        CrashInfo.s_AppName = arg.Replace("-AppName=UE4-", "");
+                    }
                 }
                 else if(arg.Contains("/Saved/Crashes/"))
                 {

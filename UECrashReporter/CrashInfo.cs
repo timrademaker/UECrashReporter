@@ -12,7 +12,7 @@ namespace UECrashReporter
         public byte[] m_MiniDump = new byte[0];
 
 
-        public static string s_AppName { get; set; } = string.Empty;
+        public static string s_AppName { get; set; } = Properties.Resources.AppName;
         public static string s_CrashReportLocation { get; set; } = string.Empty;
 
         public static CrashInfo GetCrashInfo(bool a_IncludeLog)

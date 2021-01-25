@@ -6,7 +6,8 @@ namespace UECrashReporter
 {
     class Discord
     {
-        static string s_WebhookUrl = string.Empty;
+        static string s_WebhookUrl = Properties.Resources.DiscordWebhook;
+        static string s_CrashReportEmbedColor = Properties.Resources.CrashReportEmbedColor;
 
         private static readonly HttpClient s_HttpClient = new HttpClient();
 
@@ -16,6 +17,11 @@ namespace UECrashReporter
         {
             string filenamePrefix = a_AppName != string.Empty ? a_AppName + "-" : "";
             string fileName = filenamePrefix + "Crash-" + DateTime.UtcNow.ToString("yyyy-MM-dd--HH-mm") + ".zip";
+
+            if(s_CrashReportEmbedColor == string.Empty)
+            {
+                s_CrashReportEmbedColor = "16745472";
+            }
 
             string embedStr = string.Empty;
 
@@ -28,7 +34,7 @@ namespace UECrashReporter
                             "{" +
                                 "\"title\": \"Crash Report\"," +
                                 "\"description\": \"" + a_CrashDescription + "\"," +
-                                "\"color\": \"16745472\"" +
+                                "\"color\": \"" + s_CrashReportEmbedColor + "\"" +
                             "}" +
                         "]" +
                     "}";

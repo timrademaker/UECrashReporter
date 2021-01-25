@@ -8,7 +8,7 @@ namespace UECrashReporter
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static string s_AppName = string.Empty;
+        public static string s_AppName = Properties.Resources.AppName;
 
         private static string s_GameNameWildcard = "$GameName";
 
