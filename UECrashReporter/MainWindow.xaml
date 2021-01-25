@@ -27,7 +27,7 @@
 
         <!-- Log file checkbox -->
         <CheckBox x:Name="IncludeCrashLog" Grid.Column="0" Grid.Row="2" IsChecked="True">
-            <TextBlock Text="Include log files with submission. I understand that logs contain some personal information such as my system and user name." TextWrapping="Wrap"/>
+            <TextBlock Text="Include log files with submission. I understand that logs contain some personal information such as my system- and user name." TextWrapping="Wrap"/>
         </CheckBox>
 
         <!-- Submit buttons -->
