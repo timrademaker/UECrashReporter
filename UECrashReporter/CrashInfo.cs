@@ -81,8 +81,11 @@ namespace UECrashReporter
             // Determine build version
             if (Properties.Resources.RelativeVersionFilePath != string.Empty)
             {
-                string gameDir = s_CrashReportLocation.Substring(0, s_CrashReportLocation.IndexOf("/Saved/Crashes"));
+                // Get the game's base directory based on the current working directory
+                string workingDirectory = Directory.GetCurrentDirectory().Replace("\\", "/");
+                string gameDir = workingDirectory.Substring(0, workingDirectory.IndexOf("/Binaries/Win"));
                 gameDir = gameDir.Substring(0, gameDir.LastIndexOf("/"));
+
                 info.m_BuildVersion = GetBuildVersion(gameDir);
             }
 
