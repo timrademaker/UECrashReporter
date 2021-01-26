@@ -86,5 +86,14 @@ namespace UECrashReporter.Properties {
                 return ResourceManager.GetString("DiscordWebhook", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string RelativeVersionFilePath {
+            get {
+                return ResourceManager.GetString("RelativeVersionFilePath", resourceCulture);
+            }
+        }
     }
 }

@@ -129,4 +129,8 @@
     <value />
     <comment>The Discord webhook to send the crash report to</comment>
   </data>
+  <data name="RelativeVersionFilePath" xml:space="preserve">
+    <value />
+    <comment>The path to a file containing the version identifier of the build on its first line, relative to the game's base directory.</comment>
+  </data>
 </root>

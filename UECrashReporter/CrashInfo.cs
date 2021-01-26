@@ -10,6 +10,7 @@ namespace UECrashReporter
         public string m_LogContent = string.Empty;
         public string m_XmlContent = string.Empty;
         public byte[] m_MiniDump = new byte[0];
+        public string m_BuildVersion = string.Empty;
 
 
         public static string s_AppName { get; set; } = Properties.Resources.AppName;
@@ -19,7 +20,7 @@ namespace UECrashReporter
         {
             // Check if crash data can be found
             DirectoryInfo crashDir = null;
-            if(s_CrashReportLocation != string.Empty)
+            if (s_CrashReportLocation != string.Empty)
             {
                 crashDir = new DirectoryInfo(s_CrashReportLocation);
                 crashDir.Refresh();
@@ -32,7 +33,7 @@ namespace UECrashReporter
                 string path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
                 path += "\\" + s_AppName + "\\Saved\\Crashes";
                 crashDir = new DirectoryInfo(path);
-                
+
                 if (!crashDir.Exists)
                 {
                     return null;
@@ -45,12 +46,12 @@ namespace UECrashReporter
             }
 
             var info = new CrashInfo();
-            
+
             dir.Refresh();
 
             FileInfo[] fileBuffer;
 
-            if(a_IncludeLog)
+            if (a_IncludeLog)
             {
                 // Get the log file
                 fileBuffer = dir.GetFiles("*.log");
@@ -77,17 +78,25 @@ namespace UECrashReporter
                 info.m_MiniDump = File.ReadAllBytes(dumpFile.FullName);
             }
 
+            // Determine build version
+            if (Properties.Resources.RelativeVersionFilePath != string.Empty)
+            {
+                string gameDir = s_CrashReportLocation.Substring(0, s_CrashReportLocation.IndexOf("/Saved/Crashes"));
+                gameDir = gameDir.Substring(0, gameDir.LastIndexOf("/"));
+                info.m_BuildVersion = GetBuildVersion(gameDir);
+            }
+
             return info;
         }
 
         public byte[] ZipCrashInfo()
         {
-            using(var memoryStream = new MemoryStream())
+            using (var memoryStream = new MemoryStream())
             {
-                using(var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+                using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
                 {
                     // Add log content
-                    if(m_LogContent != string.Empty)
+                    if (m_LogContent != string.Empty)
                     {
                         var logFile = archive.CreateEntry("Crash.log");
 
@@ -122,6 +131,25 @@ namespace UECrashReporter
 
                 return memoryStream.ToArray();
             }
+        }
+
+        private static string GetBuildVersion(string gameDirectory)
+        {
+            // Check if the version file exists
+            FileInfo versionFile = new FileInfo(gameDirectory + "/" + Properties.Resources.RelativeVersionFilePath);
+            if (!versionFile.Exists)
+            {
+                return string.Empty;
+            }
+
+            // Read from the file
+            string[] versionFileContent = File.ReadAllLines(versionFile.FullName);
+            if (versionFileContent.Length > 0)
+            {
+                return versionFileContent[0];
+            }
+
+            return string.Empty;
         }
     }
 }

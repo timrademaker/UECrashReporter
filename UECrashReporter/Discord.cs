@@ -16,7 +16,8 @@ namespace UECrashReporter
         public static async Task SendToDiscord(CrashInfo a_CrashInfo, string a_CrashDescription, string a_AppName = "")
         {
             string filenamePrefix = a_AppName != string.Empty ? a_AppName + "-" : "";
-            string fileName = filenamePrefix + "Crash-" + DateTime.UtcNow.ToString("yyyy-MM-dd--HH-mm") + ".zip";
+            string versionString = a_CrashInfo.m_BuildVersion != string.Empty ? a_CrashInfo.m_BuildVersion + "-" : "";
+            string fileName = filenamePrefix + versionString + "Crash-" + DateTime.UtcNow.ToString("yyyy-MM-dd--HH-mm") + ".zip";
 
             if(s_CrashReportEmbedColor == string.Empty)
             {
