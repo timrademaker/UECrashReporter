@@ -23,7 +23,7 @@
         <!-- Explanation of what happened -->
         <TextBlock x:Name="Explanation" Grid.Column="0" Grid.Row="0" Text="$GameName has encountered a critical error and could not recover.&#x0a;&#x0a;What were you doing when the game crashed? (Optional)" TextWrapping="Wrap"/>
         <!-- Text box for user description of what happened -->
-        <TextBox x:Name="CrashDescription" Grid.Column="0" Grid.Row="1" Background="White" MaxLength="2048" TextWrapping="Wrap"/>
+        <TextBox x:Name="CrashDescription" Grid.Column="0" Grid.Row="1" Background="White" MaxLength="2048" TextWrapping="Wrap" AcceptsReturn="True"/>
 
         <!-- Log file checkbox -->
         <CheckBox x:Name="IncludeCrashLog" Grid.Column="0" Grid.Row="2" IsChecked="True">

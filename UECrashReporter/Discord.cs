@@ -28,6 +28,7 @@ namespace UECrashReporter
 
             if (a_CrashDescription != string.Empty)
             {
+                a_CrashDescription = a_CrashDescription.Replace("\r", "").Replace("\n", "\\n");
 
                 embedStr = "{" +
                     "\"embeds\": " +
