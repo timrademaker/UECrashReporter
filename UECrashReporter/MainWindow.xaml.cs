@@ -17,7 +17,7 @@ namespace UECrashReporter
             InitializeComponent();
 
             Explanation.Text = Explanation.Text.Replace(s_GameNameWildcard, s_AppName != string.Empty ? s_AppName : "The game");
-            Title = Title.Replace(s_GameNameWildcard, s_AppName != string.Empty ? s_AppName : "Tim's");
+            Title = Title.Replace(s_GameNameWildcard, s_AppName != string.Empty ? s_AppName : "").Trim(' ');
         }
 
         private async void SendAndClose_Click(object sender, RoutedEventArgs e)
