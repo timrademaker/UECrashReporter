@@ -22,6 +22,8 @@ namespace UECrashReporter
 
         private async void SendAndClose_Click(object sender, RoutedEventArgs e)
         {
+            btnSendAndClose.IsEnabled = false;
+
             var ci = CrashInfo.GetCrashInfo(IncludeCrashLog.IsEnabled);
 
             await Discord.SendToDiscord(ci, CrashDescription.Text, s_AppName);
